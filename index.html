@@ -82,17 +82,17 @@ div#archive_div {
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width,user-scalable=no,initial-scale=1.0,maximum-scale=1.0"/>
 </head>
-<script src="libraries/core/d3.v4.min.js"></script>
-<script src="libraries/core/d3-selection-multi.v1.min.js"></script>
-<script src="libraries/core/jquery-3.2.1.min.js"></script>
-<script src="libraries/math/math.min.js"></script>
-<script src="libraries/ui/popper.min.js"></script>
-<script src="libraries/ui/bootstrap.min.js"></script>
+<script src="../libraries/core/d3.v4.min.js"></script>
+<script src="../libraries/core/d3-selection-multi.v1.min.js"></script>
+<script src="../libraries/core/jquery-3.2.1.min.js"></script>
+<script src="../libraries/math/math.min.js"></script>
+<script src="../libraries/ui/popper.min.js"></script>
+<script src="../libraries/ui/bootstrap.min.js"></script>
 <script type="text/x-mathjax-config"> MathJax.Hub.Config({ extensions: ["tex2jax.js"], jax: ["input/TeX","output/HTML-CSS"], tex2jax: { inlineMath: [["\(","\)"]] } }); </script>
-<script type="text/javascript" src="libraries/math/MathJax/MathJax.js"></script>
-<link rel="stylesheet" href="libraries/ui/bootstrap.min.css">
-<link rel="stylesheet" href="libraries/ui/font-awesome-4.7.0/css/font-awesome.min.css">
-<link rel="stylesheet" href="stylesheet.css">
+<script type="text/javascript" src="../libraries/math/MathJax/MathJax.js"></script>
+<link rel="stylesheet" href="../libraries/ui/bootstrap.min.css">
+<link rel="stylesheet" href="../libraries/ui/font-awesome-4.7.0/css/font-awesome.min.css">
+<link rel="stylesheet" href="../stylesheet.css">
 <body>
 <font size="6.5">
 <div class = 'container' style = 'width: 100%;' style="border:thin">
@@ -217,13 +217,13 @@ div#archive_div {
       <!-- <img src = "ages.svg"></img><br> -->
 </font>
       <span style="display:inline-block; width: 35;"></span>
-      <input type = 'number' placeholder = "0" id = 'number1' min = 0 max = 99></input>
+      <input type = 'number' placeholder = "0" id = 'number1' min = "0" max = "99"></input>
       <!-- <p><text>Age of second person </text> --><span style="display:inline-block; width: 35;"></span>
-      <input type = 'number' placeholder = "0" id = 'number2' min = 0 max = 99></input>
+      <input type = 'number' placeholder = "0" id = 'number2' min = "0" max = "99"></input>
       <!-- <p><text>Age of third person </text> --><span style="display:inline-block; width: 35;"></span>
-      <input type = 'number' placeholder = "0" id = 'number3' min = 0 max = 99></input>
+      <input type = 'number' placeholder = "0" id = 'number3' min = "0" max = "99"></input>
       <!-- <p><text>Age of fourth person </text> --><span style="display:inline-block; width: 35;"></span>
-      <input type = 'number' placeholder = "0" id = 'number4' min = 0 max = 99></input>
+      <input type = 'number' placeholder = "0" id = 'number4' min = "0" max = "99"></input>
 
   </div>
 
@@ -275,11 +275,6 @@ d3.select('#enter_btn').on('click', function(){
   agefunc();
   submitData();
 })
-d3.select('#clear_archive_btn').on('click', function(){
-    d3.select('#archive_div').selectAll('div').remove();
-    setupArchive();
-    $('body').trigger('data_log', { type: 'clear_archive' });
-  }).styles({ 'cursor': 'hand' });
 
 var data_log = [];
 var data_log2 = [];
@@ -323,7 +318,11 @@ function agefunc(ages){
   $('body').trigger('data_log', { type: 'archive' });
 
 //for clearing the archive/board
-  
+d3.select('#clear_archive_btn').on('click', function(){
+  d3.select('#archive_div').selectAll('div').remove();
+  //setupArchive();
+  $('body').trigger('data_log', { type: 'clear_archive' });
+})
 }
 //for writing on the archive/board
 // function push_data(data_log){
@@ -354,31 +353,29 @@ function getCookie(cname) {
     }
 }
 function submitData(data_log){
-  var user_id = this.getCookie('user_id')
-  var buddy_ids = this.getCookie('buddy_ids')
-  var sessionid = this.getCookie('sessionid')
+  var user_id = this.getCookie('user_id');
+  var buddy_ids = this.getCookie('buddy_ids');
+  var sessionid = this.getCookie('sessionid');
   var data =
   {
   "app_name": "ages_puzzle",
   "params":
   {
     data_log,
-    // "language" : "en"
+    "language" : "en"
   }
 }
 var data_string = {}
+// data_string['user_id'] = this.getCookie('user_and_buddy_ids');
 data_string['user_id'] = this.getCookie('user_id');
-data_string['buddies_ids'] = this.getCookie('buddy_ids');
+data_string['buddy_ids'] = this.getCookie('buddy_ids');
+
 var date = new Date();
 var csrftoken;
 csrftoken = this.getCookie('csrftoken');
 var timestamp = date.getFullYear() + "-" + (date.getMonth() + 1) + "-" + date.getDate() + " " +  date.getHours() + ":" + date.getMinutes() + ":" + date.getSeconds();
-
 data_string['created_at'] = timestamp;
 data_string['sessionid'] = this.getCookie('sessionid');
-
-
-  
 for (var key in data) {data_string[key] = data[key];};
 data_string = JSON.stringify(data_string);
   // var csrftoken;
@@ -389,6 +386,7 @@ data_string = JSON.stringify(data_string);
                       "app_name":"ages_puzzle",
                       "user_data":data_string,
                       'csrfmiddlewaretoken':csrftoken,
+                      // 'sessionid':sessionid,
                   },
                 url: "/tools/logging",
                 datatype: "json",
@@ -396,6 +394,5 @@ data_string = JSON.stringify(data_string);
               }
 });
 }
-
 </script>
 
