@@ -228,7 +228,7 @@ div#archive_div {
   </div>
 
   <div class = 'text-center mt-2'>
-    <button class = 'find_button' id = 'enter_btn'><font color="white" method="POST" action="http://127.0.0.1:3000/Desktop/a.json"> Calculate</font></button>
+    <button class = 'find_button' id = 'enter_btn'><font color="white" method="POST"> Calculate</font></button>
   </div>
   <div class = 'mt-3'>
   <center><div class="center border">
@@ -286,6 +286,7 @@ $('body').on('data_log', function(event, d){
     age2: number2,
     age3: number3,
     age4: number4,
+    timeStamp: Date(Date.now())
     //event_type: d.type
   };
   data_log.push(temp);
